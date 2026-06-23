@@ -1,28 +1,27 @@
 @import "tailwindcss";
 
 /* =====================================================
-   ANANT REAL ESTATES — PREMIUM DARK DESIGN SYSTEM
+   ANANT REAL ESTATES — PREMIUM LIGHT DESIGN SYSTEM
    ===================================================== */
 
 :root {
-  /* Force dark theme always */
-  --background: #080810;
-  --surface: #0f0f1a;
-  --surface-2: #141422;
-  --foreground: #f8fafc;
-  --foreground-muted: #94a3b8;
+  --background: #ffffff;
+  --surface: #f8fafc;
+  --surface-2: #f1f5f9;
+  --foreground: #0f172a; /* Deep Slate */
+  --foreground-muted: #64748b;
 
-  --accent: #d4af37;        /* Muted gold */
-  --accent-bright: #e5c55a;
-  --accent-dim: #b8962e;
-  --accent-foreground: #000000;
+  --accent: #b89947; /* Muted Gold */
+  --accent-bright: #d4af37;
+  --accent-dim: #a18335;
+  --accent-foreground: #ffffff;
 
-  --border: rgba(255, 255, 255, 0.08);
-  --border-accent: rgba(212, 175, 55, 0.3);
+  --border: rgba(15, 23, 42, 0.08); /* Dark slate with low opacity */
+  --border-accent: rgba(184, 153, 71, 0.3);
 
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-bg-hover: rgba(255, 255, 255, 0.06);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-hover: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(15, 23, 42, 0.05);
 }
 
 @theme inline {
@@ -38,7 +37,7 @@
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
@@ -55,23 +54,25 @@ body {
    ===================================================== */
 .glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid var(--glass-border);
 }
 
 .glass-dark {
-  background: rgba(8, 8, 16, 0.8);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid var(--border);
+  /* Used for dark floating elements on light bg */
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
 }
 
 /* =====================================================
    GOLD GLOW / ACCENT UTILITIES
    ===================================================== */
 .glow-gold {
-  box-shadow: 0 0 40px rgba(212, 175, 55, 0.15), 0 0 80px rgba(212, 175, 55, 0.05);
+  box-shadow: 0 10px 40px rgba(184, 153, 71, 0.08), 0 0 20px rgba(184, 153, 71, 0.03);
 }
 
 .text-gradient-gold {
@@ -96,7 +97,7 @@ body {
   transform: translateX(-50%);
   width: 800px;
   height: 400px;
-  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.06) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(184, 153, 71, 0.03) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -110,6 +111,9 @@ body {
   background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--accent-dim);
+  background: var(--border);
   border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground-muted);
 }
