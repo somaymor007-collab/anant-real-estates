@@ -1,93 +1,72 @@
 # =============================================
-# Anant Real Estates - GitHub Auto-Sync Script
-# Run this in a SEPARATE terminal window.
-# It watches for file changes and auto-pushes
-# to GitHub every time you save a file.
-#
-# SETUP (run once before starting this script):
-#   $env:GITHUB_TOKEN = "your_github_token_here"
-#
-# Then run:
-#   .\sync-to-github.ps1
+# Anant Real Estates - GitHub Live Sync Script
 # =============================================
+
+param(
+    [string]$Token = $env:GITHUB_TOKEN,
+    [int]$Debounce = 5
+)
 
 $repoPath = "C:\Users\sande\OneDrive\Desktop\Learning\Anant"
 $username = "somaymor007-collab"
 $repoName = "anant-real-estates"
-$debounce = 5   # seconds to wait after last change before committing
 
-# Read token from environment variable (never hardcode tokens in files)
-$token = $env:GITHUB_TOKEN
-if (-not $token) {
-    Write-Host "  ❌ ERROR: GITHUB_TOKEN environment variable not set." -ForegroundColor Red
-    Write-Host "  Run this first:" -ForegroundColor Yellow
-    Write-Host "    `$env:GITHUB_TOKEN = 'your_token_here'" -ForegroundColor Cyan
+if (-not $Token) {
+    Write-Host "[ERROR] Set GITHUB_TOKEN env var first." -ForegroundColor Red
     exit 1
 }
 
-$remoteUrl = "https://${username}:${token}@github.com/${username}/${repoName}.git"
-
-# Ensure remote is set correctly (with token in URL for auth)
+$remoteUrl = "https://${username}:${Token}@github.com/${username}/${repoName}.git"
 Set-Location $repoPath
 git remote set-url origin $remoteUrl 2>$null
 
-Write-Host ""
-Write-Host "  ╔═══════════════════════════════════════════╗" -ForegroundColor DarkYellow
-Write-Host "  ║  🏡 Anant Real Estates — GitHub Live Sync  ║" -ForegroundColor Yellow
-Write-Host "  ╚═══════════════════════════════════════════╝" -ForegroundColor DarkYellow
-Write-Host ""
-Write-Host "  📁 Watching : $repoPath" -ForegroundColor Cyan
-Write-Host "  🔗 Repo     : https://github.com/$username/$repoName" -ForegroundColor Cyan
-Write-Host "  ⏱  Debounce : ${debounce}s after last file change" -ForegroundColor Cyan
-Write-Host ""
-Write-Host "  Press Ctrl+C to stop." -ForegroundColor Gray
-Write-Host ""
+Write-Host "[SYNC] Anant Real Estates - Live GitHub Sync STARTED" -ForegroundColor Cyan
+Write-Host "[SYNC] Watching: $repoPath" -ForegroundColor Yellow
+Write-Host "[SYNC] Repo:     https://github.com/$username/$repoName" -ForegroundColor Yellow
+Write-Host "[SYNC] Press Ctrl+C to stop." -ForegroundColor Gray
 
-# Set up file watcher
+# File watcher
 $watcher = New-Object System.IO.FileSystemWatcher
 $watcher.Path = $repoPath
 $watcher.IncludeSubdirectories = $true
 $watcher.EnableRaisingEvents = $true
 $watcher.NotifyFilter = [IO.NotifyFilters]::LastWrite -bor [IO.NotifyFilters]::FileName -bor [IO.NotifyFilters]::DirectoryName
 
-$global:changeDetected = $false
-$global:changeTime     = [DateTime]::MinValue
+$global:changed = $false
+$global:changedAt = [DateTime]::MinValue
 
-$onChange = {
-    param($source, $e)
-    $path = $e.FullPath
-    # Ignore build artifacts and git internals
-    if ($path -match '\\(node_modules|\.next|\.git)\\') { return }
-    $global:changeDetected = $true
-    $global:changeTime     = [DateTime]::Now
+$action = {
+    param($s, $e)
+    $p = $e.FullPath
+    if ($p -match '\\(node_modules|\.next|\.git)\\') { return }
+    $global:changed = $true
+    $global:changedAt = [DateTime]::Now
 }
 
-Register-ObjectEvent $watcher "Changed" -Action $onChange | Out-Null
-Register-ObjectEvent $watcher "Created" -Action $onChange | Out-Null
-Register-ObjectEvent $watcher "Deleted" -Action $onChange | Out-Null
-Register-ObjectEvent $watcher "Renamed" -Action $onChange | Out-Null
+Register-ObjectEvent $watcher Changed -Action $action | Out-Null
+Register-ObjectEvent $watcher Created -Action $action | Out-Null
+Register-ObjectEvent $watcher Deleted -Action $action | Out-Null
+Register-ObjectEvent $watcher Renamed -Action $action | Out-Null
 
-# Main polling loop
 while ($true) {
-    if ($global:changeDetected) {
-        $elapsed = ([DateTime]::Now - $global:changeTime).TotalSeconds
-        if ($elapsed -ge $debounce) {
-            $global:changeDetected = $false
+    if ($global:changed) {
+        $secs = ([DateTime]::Now - $global:changedAt).TotalSeconds
+        if ($secs -ge $Debounce) {
+            $global:changed = $false
             $ts = Get-Date -Format "HH:mm:ss"
-
             Set-Location $repoPath
-            $status = git status --short 2>&1
-            if ($status) {
-                Write-Host "  [$ts] 📝 Changes detected — committing and pushing..." -ForegroundColor Green
+            $st = git status --short 2>&1
+            if ($st) {
+                Write-Host "[$ts] Changes found - committing..." -ForegroundColor Green
                 git add . 2>&1 | Out-Null
-                $msg = "Auto-sync: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+                $msg = "auto-sync: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
                 git commit -m $msg 2>&1 | Out-Null
                 git remote set-url origin $remoteUrl 2>&1 | Out-Null
-                $push = git push origin main 2>&1
+                git push origin main 2>&1 | Out-Null
                 if ($LASTEXITCODE -eq 0) {
-                    Write-Host "  [$ts] ✅ Pushed successfully to GitHub!" -ForegroundColor Cyan
+                    Write-Host "[$ts] Pushed to GitHub OK!" -ForegroundColor Cyan
                 } else {
-                    Write-Host "  [$ts] ❌ Push failed: $push" -ForegroundColor Red
+                    Write-Host "[$ts] Push failed. Check token." -ForegroundColor Red
                 }
             }
         }
