@@ -47,30 +47,27 @@ export default async function Home() {
       <Hero />
 
       {/* ====== FEATURED PROPERTIES ====== */}
-      <section className="py-28 px-6 section-glow">
+      <section className="py-32 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 border-b border-border pb-8">
             <div>
-              <span className="text-accent uppercase tracking-[0.3em] font-semibold text-xs mb-4 block">
-                ✦ Featured Listings
+              <span className="text-foreground-muted uppercase tracking-[0.3em] font-medium text-xs mb-4 block">
+                Featured Listings
               </span>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
-                Exclusive <span className="text-gradient-gold">Properties</span>
+              <h2 className="text-5xl md:text-6xl font-light tracking-tight text-foreground">
+                Exclusive <span className="font-semibold text-foreground">Properties</span>
               </h2>
-              <p className="text-foreground-muted font-light mt-3 max-w-md">
-                Hand-picked by our experts for discerning buyers who expect nothing but the finest.
-              </p>
             </div>
             <Link
               href="/properties"
-              className="inline-flex items-center gap-2 text-sm font-medium text-foreground-muted hover:text-accent transition-colors group"
+              className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-foreground/70 transition-colors group"
             >
               View All Properties
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProperties.map((property, index) => (
               <PropertyCard key={property.id} property={property} index={index} />
             ))}
@@ -79,97 +76,93 @@ export default async function Home() {
       </section>
 
       {/* ====== STATS ====== */}
-      <section className="py-24 px-6 border-y border-white/5">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+      <section className="py-24 px-6 bg-surface border-y border-border">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12">
           {stats.map((stat, i) => (
             <div key={i} className="text-center group">
-              <p className="text-4xl md:text-5xl font-bold text-gradient-gold mb-2">{stat.value}</p>
-              <p className="text-white font-semibold text-sm mb-1">{stat.label}</p>
-              <p className="text-foreground-muted text-xs">{stat.sub}</p>
+              <p className="text-5xl md:text-6xl font-light text-foreground mb-4">{stat.value}</p>
+              <p className="text-foreground font-medium text-sm mb-1 uppercase tracking-wider">{stat.label}</p>
+              <p className="text-foreground-muted text-xs font-light">{stat.sub}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ====== WHY CHOOSE US ====== */}
-      <section className="py-28 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section className="py-32 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div>
-            <span className="text-accent uppercase tracking-[0.3em] font-semibold text-xs mb-4 block">
-              ✦ The Anant Standard
+            <span className="text-foreground-muted uppercase tracking-[0.3em] font-medium text-xs mb-6 block">
+              The Anant Standard
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
+            <h2 className="text-5xl md:text-6xl font-light tracking-tight text-foreground mb-8">
               Beyond Real Estate. <br />
-              <span className="text-gradient-gold italic">A Lifestyle.</span>
+              <span className="font-semibold italic">A Lifestyle.</span>
             </h2>
-            <p className="text-foreground-muted font-light text-lg leading-relaxed mb-10">
+            <p className="text-foreground-muted font-light text-xl leading-relaxed mb-12">
               Our exclusive portfolio represents the pinnacle of luxury living. We offer 
               a confidential, unparalleled advisory service for buyers and sellers of the 
-              world's most extraordinary properties.
+              world&apos;s most extraordinary properties.
             </p>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-8">
               {[
                 { title: "Expert Advisory", desc: "Our specialists guide you at every step" },
                 { title: "Discreet Service", desc: "Complete privacy and confidentiality" },
                 { title: "Global Network", desc: "Access properties across 40+ countries" },
                 { title: "White Glove", desc: "Bespoke experience tailored to you" },
               ].map((feature) => (
-                <div key={feature.title} className="glass border border-white/8 p-5 rounded-xl hover:border-accent/20 transition-colors">
-                  <div className="w-8 h-8 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center mb-3">
-                    <span className="text-accent text-sm">✦</span>
-                  </div>
-                  <h4 className="text-white font-semibold text-sm mb-1">{feature.title}</h4>
-                  <p className="text-foreground-muted text-xs leading-relaxed">{feature.desc}</p>
+                <div key={feature.title} className="border-l border-border pl-6">
+                  <h4 className="text-foreground font-medium text-base mb-2">{feature.title}</h4>
+                  <p className="text-foreground-muted text-sm font-light leading-relaxed">{feature.desc}</p>
                 </div>
               ))}
             </div>
           </div>
           <div className="relative">
-            <div className="aspect-[4/5] rounded-3xl overflow-hidden glow-gold">
+            <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl shadow-foreground/5">
               <img
                 src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2053&q=80"
                 alt="Luxury Interior"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
             </div>
           </div>
         </div>
       </section>
 
       {/* ====== TESTIMONIALS ====== */}
-      <section className="py-28 px-6 bg-surface/50 section-glow">
+      <section className="py-32 px-6 bg-surface border-t border-border">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="text-accent uppercase tracking-[0.3em] font-semibold text-xs mb-4 block">
-              ✦ Client Stories
+          <div className="text-center mb-20">
+            <span className="text-foreground-muted uppercase tracking-[0.3em] font-medium text-xs mb-6 block">
+              Client Stories
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
-              Voices of <span className="text-gradient-gold">Excellence</span>
+            <h2 className="text-5xl md:text-6xl font-light tracking-tight text-foreground">
+              Voices of <span className="font-semibold">Excellence</span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((t, i) => (
-              <div key={i} className="glass border border-white/8 p-6 rounded-2xl hover:border-accent/20 transition-all duration-300 group">
+              <div key={i} className="bg-background border border-border p-8 rounded-3xl shadow-sm hover:shadow-lg hover:shadow-foreground/5 transition-all duration-300">
                 {/* Stars */}
-                <div className="flex gap-1 mb-4">
+                <div className="flex gap-1 mb-6">
                   {Array.from({ length: t.rating }).map((_, si) => (
-                    <Star key={si} size={14} className="fill-accent text-accent" />
+                    <Star key={si} size={16} className="fill-foreground text-foreground" />
                   ))}
                 </div>
                 {/* Quote */}
-                <p className="text-foreground-muted font-light text-sm leading-relaxed mb-6 italic">
+                <p className="text-foreground font-light text-base leading-relaxed mb-8 italic">
                   &ldquo;{t.quote}&rdquo;
                 </p>
                 {/* Author */}
-                <div className="flex items-center gap-3 border-t border-white/8 pt-4">
-                  <div className="w-10 h-10 rounded-full bg-accent/20 border border-accent/30 flex items-center justify-center text-accent font-bold text-sm">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-foreground font-medium text-sm">
                     {t.avatar}
                   </div>
                   <div>
-                    <p className="text-white font-semibold text-sm">{t.name}</p>
-                    <p className="text-foreground-muted text-xs">{t.role}</p>
+                    <p className="text-foreground font-medium text-sm">{t.name}</p>
+                    <p className="text-foreground-muted font-light text-xs mt-0.5">{t.role}</p>
                   </div>
                 </div>
               </div>
@@ -179,29 +172,29 @@ export default async function Home() {
       </section>
 
       {/* ====== CTA SECTION ====== */}
-      <section className="py-28 px-6">
+      <section className="py-32 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <span className="text-accent uppercase tracking-[0.3em] font-semibold text-xs mb-4 block">
-            ✦ Ready to Begin?
+          <span className="text-foreground-muted uppercase tracking-[0.3em] font-medium text-xs mb-6 block">
+            Ready to Begin?
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
+          <h2 className="text-5xl md:text-7xl font-light tracking-tight text-foreground mb-8">
             Your Perfect Home <br />
-            <span className="text-gradient-gold">Awaits You</span>
+            <span className="font-semibold">Awaits You</span>
           </h2>
-          <p className="text-foreground-muted font-light text-lg mb-10">
+          <p className="text-foreground-muted font-light text-xl mb-12">
             Schedule a private consultation with our expert advisors today.
           </p>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/properties"
-              className="inline-flex items-center gap-2 bg-accent text-black px-8 py-4 rounded-full font-bold hover:bg-accent-bright transition-all duration-300 hover:shadow-xl hover:shadow-accent/30 group"
+              className="inline-flex items-center gap-3 bg-foreground text-background px-10 py-5 rounded-full font-medium hover:bg-foreground/90 transition-all duration-300 shadow-xl shadow-foreground/10 group"
             >
               Browse Properties
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 glass border border-white/10 text-white px-8 py-4 rounded-full font-medium hover:border-accent/40 transition-all"
+              className="inline-flex items-center gap-2 border border-border text-foreground px-10 py-5 rounded-full font-medium hover:bg-surface hover:border-foreground/20 transition-all"
             >
               Get in Touch
             </Link>
